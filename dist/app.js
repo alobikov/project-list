@@ -90,6 +90,20 @@ class Component {
         console.log(this);
     }
 }
+class ProjectItem extends Component {
+    constructor(hostElmId, project) {
+        super("single-project", hostElmId, "beforeend", project.id);
+        this.project = project;
+        this.renderContent();
+    }
+    configure() { }
+    renderContent() {
+        console.log("renderContent", this.element);
+        this.element.querySelector("h2").textContent = this.project.title;
+        this.element.querySelector("h3").textContent = this.project.numOfPeople.toString();
+        this.element.querySelector("p").textContent = this.project.description;
+    }
+}
 class ProjectList extends Component {
     constructor(type) {
         super("project-list", "app", "beforeend", type + "-projects");
@@ -103,9 +117,11 @@ class ProjectList extends Component {
         ul$.innerHTML = "";
         this.assignedProjects.forEach((project) => {
             if (project.type === this.type) {
-                const li$ = document.createElement("li");
-                li$.textContent = project.title;
-                ul$.appendChild(li$);
+                console.log(this.element.id);
+                new ProjectItem(this.element.querySelector("ul").id, project);
+                // const li$ = document.createElement("li");
+                // li$.textContent = project.title;
+                // ul$.appendChild(li$);
             }
         });
     }
